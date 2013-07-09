@@ -37,10 +37,48 @@
         <dependency>
             <groupId>org.broadleafcommerce</groupId>
             <artifactId>broadleaf-framework</artifactId>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>hibernate-tools</artifactId>
+            		<groupId>org.hibernate</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>jcl-over-slf4j</artifactId>
+            		<groupId>org.slf4j</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>xmlbeans</artifactId>
+            		<groupId>org.apache.xmlbeans</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>spring-security-ldap</artifactId>
+            		<groupId>org.springframework.security</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>struts-core</artifactId>
+            		<groupId>org.apache.struts</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>struts-tiles</artifactId>
+            		<groupId>org.apache.struts</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>struts-taglib</artifactId>
+            		<groupId>org.apache.struts</groupId>
+            	</exclusion>
+            </exclusions>            
         </dependency>
         <dependency>
             <groupId>org.broadleafcommerce</groupId>
             <artifactId>broadleaf-profile</artifactId>
         </dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency> 
+		<dependency>
+			<groupId>commons-dbcp</groupId>
+			<artifactId>commons-dbcp</artifactId>
+		</dependency>		       
     </dependencies>
 </project>

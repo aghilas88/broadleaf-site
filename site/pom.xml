@@ -17,7 +17,7 @@
         <!-- httpsPort and httpPort are used by embeded jetty server.-->
         <!-- Make sure the following httpsPort matches what's in the runtime-properties file,  -->
         <httpsPort>8443</httpsPort> 
-        <httpPort>8080</httpPort>
+        <httpPort>8081</httpPort>
     </properties>
     <build>
         <outputDirectory>${webappDirectory}/WEB-INF/classes</outputDirectory>
@@ -112,23 +112,37 @@
         <dependency>
             <groupId>com.mycompany</groupId>
             <artifactId>core</artifactId>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>commons-lang</artifactId>
+            		<groupId>commons-lang</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.broadleafcommerce</groupId>
             <artifactId>broadleaf-framework-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>xpp3_min</artifactId>
+            		<groupId>xpp3</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>commons-lang</artifactId>
+            		<groupId>commons-lang</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
         </dependency>
+        <!--
         <dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jdbc</artifactId>
         </dependency>
+        -->
         <dependency>
             <groupId>commons-dbcp</groupId>
             <artifactId>commons-dbcp</artifactId>
