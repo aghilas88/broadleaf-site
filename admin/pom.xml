@@ -123,7 +123,7 @@
             </plugin>
         </plugins>
     </build>
-    <dependencies>
+   <dependencies>
         <dependency>
             <groupId>org.broadleafcommerce</groupId>
             <artifactId>broadleaf-admin-module</artifactId>
@@ -142,16 +142,20 @@
             <artifactId>broadleaf-common</artifactId>
             <exclusions>
             	<exclusion>
-            		<artifactId>struts-core</artifactId>
-            		<groupId>org.apache.struts</groupId>
+            		<artifactId>spring-security-ldap</artifactId>
+            		<groupId>org.springframework.security</groupId>
             	</exclusion>
             	<exclusion>
-            		<artifactId>struts-taglib</artifactId>
-            		<groupId>org.apache.struts</groupId>
+            		<artifactId>commands</artifactId>
+            		<groupId>org.eclipse.core</groupId>
             	</exclusion>
             	<exclusion>
-            		<artifactId>struts-tiles</artifactId>
-            		<groupId>org.apache.struts</groupId>
+            		<artifactId>org.eclipse.jdt.core</artifactId>
+            		<groupId>org.eclipse.tycho</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>hibernate-tools</artifactId>
+            		<groupId>org.hibernate</groupId>
             	</exclusion>
             </exclusions>
         </dependency>

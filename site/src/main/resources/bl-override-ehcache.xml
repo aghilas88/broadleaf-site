@@ -57,9 +57,9 @@
         
     <cache
         name="blTranslationElements"
-        maxElementsInMemory="10000"
+        maxElementsInMemory="1"
         eternal="false"
         overflowToDisk="false"
-        timeToLiveSeconds="5"/>
+        timeToLiveSeconds="1"/>
         
 </ehcache>
