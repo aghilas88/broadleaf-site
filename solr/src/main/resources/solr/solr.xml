@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<solr persistent="true" sharedLib="lib">
+  <cores adminPath="/admin/cores">
+    <core loadOnStartup="true" instanceDir="primary/" transient="false" name="primary"/>
+    <core schema="schema.xml" loadOnStartup="true" instanceDir="second/" transient="false" name="second" config="solrconfig.xml" dataDir="data"/>
+  </cores>
+</solr>
