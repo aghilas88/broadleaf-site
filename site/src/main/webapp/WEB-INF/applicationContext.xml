@@ -84,7 +84,7 @@
         <constructor-arg type="int" index="1" value="${solr.solrj.queueSize}" />
         <constructor-arg type="int" index="2" value="${solr.solrj.threadCount}" />
     </bean>
-        
+	<!--
     <bean id="rebuildIndexJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="targetObject" ref="blSearchService" />
         <property name="targetMethod" value="rebuildIndex" />
@@ -101,7 +101,7 @@
             </list>
         </property>
     </bean>
-    
+    -->
     <!--  Broaldeaf Commerce comes with an Image Server that allows you to manipulate images.   For example, the 
           demo includes a high resolution image for each product that is reduced in size for browsing operations -->
     <bean id="blStaticMapNamedOperationComponent" class="org.broadleafcommerce.cms.file.service.operation.StaticMapNamedOperationComponent">

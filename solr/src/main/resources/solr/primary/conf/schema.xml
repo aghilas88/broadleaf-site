@@ -105,34 +105,22 @@
       and back compatibility is not guaranteed.  Names with both leading and
       trailing underscores (e.g. _version_) are reserved.
    -->
-        
 	<field name="id" type="long" stored="true" required="true" />
 	<field name="namespace" type="string" stored="true" required="true" />
-	<field name="productId" type="string" stored="true" required="true" />
+	<field name="productId" type="long" stored="true" required="true" />
 		
-	<field name="en_defaultSku.name_t" type="text_cjk" indexed="true" stored="true" />
-	<field name="en_defaultSku.name_s" type="text_cjk" indexed="true" stored="true" />
+	<field name="heatRange_i" type="int" stored="true" multiValued="true" />
+	
+	<field name="model_t" type="text_cn" indexed="true" stored="true" />
+	<field name="model_s" type="text_cn" indexed="true" stored="true" />
 		
-	<field name="en_model_t" type="text_cn" indexed="true" stored="true" />
-	<field name="en_model_s" type="text_cn" indexed="true" stored="true" />
-		
-	<field name="en_manufacturer_t" type="text_cjk" indexed="true" stored="true" />
-	<field name="en_manufacturer_s" type="text_cjk" indexed="true" stored="true" />
-		
-	<field name="en_defaultSku.description_t" type="text_cjk" indexed="true" stored="true" />
-	<field name="en_defaultSku.description_s" type="text_cjk" indexed="true" stored="true" />
-
-	<field name="en_defaultSku.longDescription_t" type="text_cn" indexed="true" stored="true" />
-	<field name="en_defaultSku.longDescription_s" type="text_cn" indexed="true" stored="true" />
+	<field name="mfg_t" type="text_cjk" indexed="true" stored="true" />
+	<field name="mfg_s" type="text_cjk" indexed="true" stored="true" />
 		
 	<field name="category" type="long" indexed="true" stored="true" multiValued="true" />
 	<field name="explicitCategory" type="long" indexed="true" stored="true" multiValued="true" />
 		
-	<field name="defaultSku.retailPrice_p" type="double" stored="true" />
-	<field name="en_productAttributes.heatRange_i" type="int" stored="true" />
-		
-	<field name="iconPic" type="string" indexed="false" stored="true" />
-	<field name="coverPic" type="string" indexed="false" stored="true" />
+	<field name="price_p" type="double" stored="true" />
 		
 	<field name="_version_" type="long" indexed="true" stored="true"/>
 	<!-- catchall field, containing all other searchable text fields (implemented
@@ -140,7 +128,6 @@
 	<field name="text" type="text_cjk" indexed="true" stored="false" multiValued="true"/>
   
 	<dynamicField name="*_sort_i" type="long" indexed="true" stored="true"/>
-  
    		<!--
      		Some fields such as popularity and manu_exact could be modified to
      		leverage doc values:
@@ -157,7 +144,15 @@
        		EXAMPLE:  name="*_i" will match any field ending in _i (like myid_i, z_i)
        		RESTRICTION: the glob-like pattern in the name attribute must have
        		a "*" only at the start or the end.  -->	
-   
+   	<dynamicField name="*_name_c" type="text_cjk" indexed="true" stored="true" multiValued="true" />
+   	<dynamicField name="*_name_t" type="text_cjk" indexed="true" stored="true" multiValued="true" />
+	
+   	<dynamicField name="*_desc_t" type="text_cjk" indexed="true" stored="true" multiValued="true" />
+   	<dynamicField name="*_desc_c" type="text_cjk" indexed="true" stored="true" multiValued="true" />
+
+   	<dynamicField name="*_ldesc_t" type="text_cjk" indexed="true" stored="true" multiValued="true" />
+   	<dynamicField name="*_ldesc_c" type="text_cjk" indexed="true" stored="true" multiValued="true" />
+
 	<dynamicField name="*_i"  type="int"    indexed="true"  stored="true"/>
 	<dynamicField name="*_is" type="int"    indexed="true"  stored="true"  multiValued="true"/>
 	<dynamicField name="*_s"  type="string"  indexed="true"  stored="true" />

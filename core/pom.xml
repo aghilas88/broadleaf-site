@@ -39,10 +39,6 @@
             <artifactId>broadleaf-framework</artifactId>
             <exclusions>
             	<exclusion>
-            		<artifactId>hibernate-tools</artifactId>
-            		<groupId>org.hibernate</groupId>
-            	</exclusion>
-            	<exclusion>
             		<artifactId>jcl-over-slf4j</artifactId>
             		<groupId>org.slf4j</groupId>
             	</exclusion>

@@ -61,7 +61,7 @@
 
     <!-- Default locale set -->
     <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
-        <property name="defaultLocale" value="en"/>
+        <property name="defaultLocale" value="zh"/>
     </bean>
     
     <!-- Tell Spring to not try to map things in these directories to controllers -->
