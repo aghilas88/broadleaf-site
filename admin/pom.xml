@@ -34,7 +34,6 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>8.1.5.v20120716</version>
                 <configuration>
-                    <webAppSourceDirectory>${webappDirectory}</webAppSourceDirectory>
                     <contextPath>/admin</contextPath>
                     <stopPort>9967</stopPort>
                     <stopKey>foo</stopKey>
@@ -86,24 +85,6 @@
                     <keyalg>RSA</keyalg>
                 </configuration>
             </plugin>
-    
-            <plugin>
-                <groupId>org.zeroturnaround</groupId>
-                <artifactId>jrebel-maven-plugin</artifactId>
-                <configuration>
-                    <packaging>war</packaging>
-                    <rootPath>${basedir}</rootPath>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>generate-rebel-xml</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -136,6 +117,12 @@
         <dependency>
             <groupId>org.broadleafcommerce</groupId>
             <artifactId>broadleaf-framework-web</artifactId>
+            <exclusions>
+            	<exclusion>
+            		<artifactId>standard</artifactId>
+            		<groupId>taglibs</groupId>
+            	</exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.broadleafcommerce</groupId>
@@ -156,6 +143,18 @@
             	<exclusion>
             		<artifactId>hibernate-tools</artifactId>
             		<groupId>org.hibernate</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>struts-core</artifactId>
+            		<groupId>org.apache.struts</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>struts-tiles</artifactId>
+            		<groupId>org.apache.struts</groupId>
+            	</exclusion>
+            	<exclusion>
+            		<artifactId>struts-taglib</artifactId>
+            		<groupId>org.apache.struts</groupId>
             	</exclusion>
             </exclusions>
         </dependency>
