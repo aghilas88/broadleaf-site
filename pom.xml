@@ -9,7 +9,7 @@
     <name>ecommerce</name>
     <url>http://www.blc-archetype.com</url>
     <properties>
-        <blc.version>3.0.0-GA</blc.version>
+        <blc.version>3.0.1-GA</blc.version>
 		<solr.version>4.2.0</solr.version>
 		<slf4j.version>1.6.4</slf4j.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -401,6 +401,6 @@
         <module>core</module>
         <module>site</module>
     <module>solr</module>
-    <module>mobile</module>
+    <module>platform</module>
   </modules>
 </project>
