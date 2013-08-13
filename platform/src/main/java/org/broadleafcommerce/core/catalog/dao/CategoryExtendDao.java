@@ -5,6 +5,7 @@ package org.broadleafcommerce.core.catalog.dao;
 
 import java.util.List;
 
+import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.CategoryProductXref;
 
 /**
@@ -14,5 +15,7 @@ import org.broadleafcommerce.core.catalog.domain.CategoryProductXref;
 public interface CategoryExtendDao extends CategoryDao {
 
 	List<CategoryProductXref> readCategoryProductXrefByProductId(Long productId);
+
+	List<Category> readCategoriesByNameAndStatus(String name);
 
 }

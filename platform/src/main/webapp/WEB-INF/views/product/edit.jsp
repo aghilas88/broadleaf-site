@@ -18,7 +18,7 @@
 
 <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props='region:"center", title:"Various Dijits", style:"padding:10px; display:true;"'>
 <div data-dojo-type="dijit/TitlePane" data-dojo-props="title:'修改产品信息'">	
-	<form data-dojo-type="dijit/form/Form" id="formEdit">		
+	<form data-dojo-type="dijit/form/Form" id="formEdit" url="${pageContext.request.contextPath}/domain/product/edit/${productId}">		
 		<table>
 			<tr>
 				<td>
@@ -173,23 +173,12 @@
 	      	<tr>
 	      		<td colspan="4">
 	      			<center>
-					<button data-dojo-type="dojox/form/BusyButton" busyLabel="正在保存..." timeout="5">保存
-		            <script type="dojo/on" data-dojo-event="click" data-dojo-args="object">
-                        require(["dojo/request", "dojo/dom-form", "dijit/registry"], function(request, form, registry){
-							console.warn(form.toObject('formEdit'));
-                            request.post('${pageContext.request.contextPath}/domain/product/edit/${productId}',{
-                                data: form.toObject('formEdit'),
-                                handleAs: 'json'
-                            }).then(function(text){
-                                console.log("The server returned: ", text);
-                                if(text && text.hasError) {
-                                    alert(text.message);
-                                } else {
-                                    alert(text.message);
-                                }
-                            });
-                        });
-		            </script>          
+					<button data-dojo-type="dojox/form/BusyButton" busy-label="正在保存..." timeout="5" id="btnEditProduct">保存1
+						<script type="dojo/on" data-dojo-event="click">
+							require(["dojo/topic"], function(topic){
+    							topic.publish("product/button/edit/click", this);
+    						});
+		    			</script>
 					</button>
 	      		 	</center>
 	      		</td>
@@ -202,7 +191,7 @@
     <div data-dojo-type="dojox/data/QueryReadStore" data-dojo-id="categoryStore" url="${pageContext.request.contextPath}/domain/product/category/${productId}">
     </div> 
     <div>
-		<button type="button" data-dojo-type="dijit/form/Button">添加分类
+		<button type="button" data-dojo-type="dijit/form/Button">添加分类			
 		    <script type="dojo/on" data-dojo-event="click">
 		        var dlg = dijit.byId('dialog1');
 		        dlg.show();
@@ -240,6 +229,11 @@
 		</button>	
     </div>
     <div id="categoryGrid" url="${pageContext.request.contextPath}/domain/product/categories/${productId}"></div>
+</div>
+
+
+<div id="dialog1" data-dojo-type="dijit/Dialog" style="display:none;width:640px;" data-dojo-props="title:'添加分类',
+    href:'${pageContext.request.contextPath}/page/category/grid/prd-${productId}', refreshOnShow:true">
 </div>
 
 </body>

@@ -7,10 +7,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.broadleafcommerce.core.catalog.domain.Category;
-import org.broadleafcommerce.core.catalog.domain.CategoryProductXref;
 import org.broadleafcommerce.openadmin.server.dto.CategoryDto;
 import org.broadleafcommerce.openadmin.server.web.service.SimpleCatalogService;
 import org.slf4j.Logger;

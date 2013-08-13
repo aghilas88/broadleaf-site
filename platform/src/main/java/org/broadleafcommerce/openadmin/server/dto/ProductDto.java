@@ -5,6 +5,8 @@ package org.broadleafcommerce.openadmin.server.dto;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.Product;
@@ -343,6 +345,18 @@ public class ProductDto {
 
 	public void setFulfillmentType(String fulfillmentType) {
 		this.fulfillmentType = fulfillmentType;
+	}
+
+
+	public static List<ProductDto> toList(List<Product> list) {
+		if(null != list && list.size() > 0) {
+			List<ProductDto> dtos = new LinkedList<ProductDto>();
+			for(Product p : list) {
+				dtos.add(new ProductDto(p));
+			}
+			return dtos;
+		}
+		return null;
 	}
 	
 	

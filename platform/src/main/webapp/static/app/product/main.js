@@ -20,14 +20,18 @@
 define([ 'dojo/has', 'require' ], function (has, require) {
 	require([ 'dojo/parser', 
 		'dijit/registry',
+		'dojo/request', 
+		'dojo/dom-form',
 		'dojo/topic',
 		'dojo/store/JsonRest',
 		'dojo/dom',
 		'gridx/Grid',
 		'dijit/Toolbar',
 		'dijit/form/Button',
-		'dijit/form/ToggleButton', 		
-		'gridx/core/model/cache/Sync',
+		'dijit/form/ToggleButton', 
+		'dojox/form/BusyButton',		
+		//'gridx/core/model/cache/Sync',
+		'gridx/core/model/cache/Async',
         "gridx/modules/IndirectSelect",
         "gridx/modules/extendedSelect/Row",
         "gridx/modules/ColumnResizer",
@@ -36,12 +40,13 @@ define([ 'dojo/has', 'require' ], function (has, require) {
         "gridx/modules/pagination/PaginationBar",
         "gridx/modules/VirtualVScroller",
         "gridx/modules/Bar",       
-		'dojo/domReady!' ], function (parser, registry, topic, JsonRest, dom, Grid, Toolbar, Button, ToggleButton) {
+		'dojo/domReady!' ], function (parser, registry, request, form, topic, JsonRest, dom, Grid, Toolbar, Button, ToggleButton) {
     
     parser.parse();
 
 	grid = new Grid({
 		id: 'grid',
+		autoHeight: true,
 		store: new JsonRest({
     		target: dom.byId('categoryGrid').getAttribute('url')
 		}),
@@ -51,7 +56,7 @@ define([ 'dojo/has', 'require' ], function (has, require) {
 			{id: 'url', field: 'url', name: 'URL'},
 			{id: 'displayOrder', field: 'displayOrder', name: '显示顺序'}
 		],
-		cacheClass: "gridx/core/model/cache/Sync",
+		cacheClass: "gridx/core/model/cache/Async",
 		modules: [
 			"gridx/modules/IndirectSelect",
 			"gridx/modules/extendedSelect/Row",
@@ -63,6 +68,20 @@ define([ 'dojo/has', 'require' ], function (has, require) {
 	grid.placeAt('categoryGrid');
 	grid.startup();	
 
+	topic.subscribe('product/button/edit/click', function() {
+		console.warn(form.toObject('formEdit'));
+		request.post(dom.byId('formEdit').getAttribute('url'),{
+			data: form.toObject('formEdit'),
+			handleAs: 'json'
+		}).then(function(text){
+			console.log("The server returned: ", text);
+			if(text && text.hasError) {
+				alert(text.message);
+			} else {
+				alert(text.message);
+			}
+		});		
+	});
 
 	});
 });

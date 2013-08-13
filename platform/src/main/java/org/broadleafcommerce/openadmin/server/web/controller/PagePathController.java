@@ -39,4 +39,11 @@ public class PagePathController {
 		}
 		return "product/edit";
 	}
+	
+	@RequestMapping(value = {"category/grid/prd-{id}" })
+	public String categoryProductAdd(@PathVariable(value = "id") Long id, HttpServletRequest request) {
+		request.setAttribute("id", id);
+		request.setAttribute("type", "product");
+		return "category/grid";
+	}	
 }

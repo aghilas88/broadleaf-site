@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.data.domain;
+package org.broadleafcommerce.common.util.dao;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,8 +32,7 @@ import org.springframework.util.StringUtils;
  *
  * @author Oliver Gierke
  */
-public class Sort implements
-		Iterable<org.springframework.data.domain.Sort.Order>, Serializable {
+public class Sort implements Iterable<Sort.Order>, Serializable {
 
 	private static final long serialVersionUID = 5737186511678863905L;
 	public static final Direction DEFAULT_DIRECTION = Direction.ASC;
