@@ -4,25 +4,13 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Dojo Admin Platform</title>
+    <title>BLC Platform</title>
     <!-- Application-specific CSS should be stored in your application’s package to ensure portability and to allow
          the build system to combine & minify it. -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/gridx/resources/claro/Gridx.css" />      
-
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/gridx/resources/claro/Gridx.css" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/app/resources/app.css">
-
     <script data-dojo-config="async: 1, tlmSiblingOfDojo: 0, isDebug: 1" src="${pageContext.request.contextPath}/static/dojo/dojo.js"></script>
-    <script src="${pageContext.request.contextPath}/static/app/run.js"></script>   
-    <style type="text/css">
-      .gridx {
-        width: 100%;
-      }
-
-      .dijitToolbar {
-        background: none !important;
-        border-bottom: none !important;
-      }
-  </style>
+    <script src="${pageContext.request.contextPath}/static/app/run.js"></script>
 </head>
 <body class="claro">
 
@@ -91,6 +79,7 @@
 
 <div class="heading">搜索结果</div> 
 
+<!--
 <div id='grid1' jsid='grid1' data-dojo-type='gridx/Grid' data-dojo-props='
     cacheClass: "gridx/core/model/cache/Sync",
     store: store,
@@ -107,7 +96,9 @@
         "gridx/modules/VirtualVScroller"
     ]
 '></div>
+-->
 
+<div id="gridContainer" ></div>
 
 
 </div>
@@ -120,7 +111,7 @@
 
 <div class="dijitHidden">
     <!-- dialog that gets its content via ajax, uses loading message -->
-    <div data-dojo-type="dijit/Dialog" style="width:600px;" data-dojo-props="title:'Edit Product', href:'${pageContext.request.contextPath}/page/product/create',loadingMessage:'Loading dialog content...'" id="ajaxEditDialog" parseOnLoad="true"></div>
+    <div data-dojo-type="dijit/Dialog" style="width:600px;" data-dojo-props="title:'Edit Product', href:'${pageContext.request.contextPath}/page/product/edit/',loadingMessage:'Loading dialog content...'" id="ajaxEditDialog" parseOnLoad="true"></div>
 </div>
 
 </body>

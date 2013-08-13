@@ -5,14 +5,18 @@ package org.broadleafcommerce.openadmin.server.web.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
 import org.broadleafcommerce.core.catalog.domain.Category;
+import org.broadleafcommerce.core.catalog.domain.CategoryProductXref;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.service.type.ProductType;
+import org.broadleafcommerce.openadmin.server.dto.CategoryDto;
 import org.broadleafcommerce.openadmin.server.web.service.SimpleCatalogService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +24,7 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -82,5 +87,14 @@ public class ProductController {
 			result.initMessages(context, bindingResult);
 		}
 		return result;
+	}
+	
+	
+	@RequestMapping(value = "categories/{id}")
+	@ResponseBody
+	public List<CategoryDto> categories(@PathVariable(value = "id") Long productId, HttpServletResponse response) {
+		List<CategoryProductXref> cats = this.catalogService.findCategoryProductXrefByProductId(productId);
+		response.addHeader("Content-Range", "items 0-" + cats.size());
+		return CategoryDto.toXrefList(cats);
 	}	
 }

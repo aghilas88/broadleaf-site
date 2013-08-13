@@ -19,6 +19,8 @@
 	
 	<context:component-scan base-package="org.broadleafcommerce.admin.web" />
 	
+	<context:component-scan base-package="org.broadleafcommerce.openadmin" />
+	
 	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver">
         <property name="order" value="1"/>
     </bean>

@@ -9,3 +9,11 @@
 @import '../../dojo/resources/dojo.css';
 @import '../../dijit/themes/claro/claro.css';
 
+.gridx {
+	width: 100%;
+}
+
+.dijitToolbar {
+	background: none !important;
+	border-bottom: none !important;
+}

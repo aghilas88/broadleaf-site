@@ -36,7 +36,7 @@ define([ 'dojo/has', 'require' ], function (has, require) {
         "gridx/modules/pagination/PaginationBar",
         "gridx/modules/VirtualVScroller",
         "gridx/modules/Bar",       
-		'dojo/domReady!' ], function (parser, registry, topic, dataSource, storeFactory, grid, Toolbar, Button, ToggleButton) {
+		'dojo/domReady!' ], function (parser, registry, topic, dataSource, storeFactory, Grid, Toolbar, Button, ToggleButton) {
 			
 		layout = [
 			{id: 'id', field: 'id', name: 'Identity', width: '80px'},
@@ -49,11 +49,6 @@ define([ 'dojo/has', 'require' ], function (has, require) {
 			{id: 'Track', field: 'Track', name: 'Track', width: '80px'},
 			{id: 'Composer', field: 'Composer', name: 'Composer', width: '160px'}
 		];
-		store = storeFactory({
-			dataSource: dataSource, 
-			size: 10
-		});
-
 		
 		var grid1Toolbar = new Toolbar({});
 
@@ -71,7 +66,7 @@ define([ 'dojo/has', 'require' ], function (has, require) {
 			iconClass:"dijitEditorIcon dijitEditorIconCopy",
 			showLabel: false,
 			onClick: function(){
-				alert('Edit');
+				onEditButtongClick(grid);
 			}
 		}));		
 
@@ -80,7 +75,7 @@ define([ 'dojo/has', 'require' ], function (has, require) {
 			showLabel:false,
 			iconClass:"dijitEditorIcon dijitEditorIconDelete",
 			onClick: function(){
-				alert('Delete');
+				onDeleteButtonClick(grid);
 			}
 		}));
 
@@ -90,13 +85,58 @@ define([ 'dojo/has', 'require' ], function (has, require) {
 
       	parser.parse();
 
+		grid = new Grid({
+			id: 'grid',
+			store: storeFactory({
+				dataSource: dataSource,
+				size: 10
+			}),
+		    barTop: grid1Top,
+		    autoHeight: true,
+		    structure: layout,
+			cacheClass: "gridx/core/model/cache/Sync",
+			modules: [
+		        "gridx/modules/IndirectSelect",
+		        "gridx/modules/extendedSelect/Row",
+		        "gridx/modules/ColumnResizer",
+		        "gridx/modules/RowHeader",
+		        "gridx/modules/Pagination",
+		        "gridx/modules/pagination/PaginationBar",
+		        "gridx/modules/VirtualVScroller"
+			]
+		});
+
+		grid.placeAt('gridContainer');
+
+		grid.connect(grid, "onRowDblClick", function(evt){
+			console.warn(evt.rowId, evt.columnId, evt);
+			var dialog = registry.byId("ajaxEditDialog");
+			/**
+			dialog.href = dialog.href + evt.rowId;
+			console.warn(dialog);
+			dialog.show();
+			**/
+			evt.stopImmediatePropagation();
+			location.href = dialog.href + evt.rowId;
+		});
+
+		grid.startup();	
+
       	onNewButtonClick = function(grid1) {
-      		alert('test');
-      		console.info(grid1);
       		registry.byId("ajaxCreateDialog").show();
       	}
 
+      	onEditButtongClick = function(gridX) {
+      		if(gridX) {
+      			console.warn(gridX.select.row.getSelected());
+      		}
+      	}
 
+      	onDeleteButtonClick = function(gridX) {
+      		if(gridX) {
+      			console.warn(gridX);
+      		}
+      	}
 		// Register the alerting routine with the "alertUser" topic.
 		topic.subscribe("product.create.success", function(text){
 			alert('Got text: ' + text);
