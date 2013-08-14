@@ -69,7 +69,6 @@ define([ 'dojo/has', 'require' ], function (has, require) {
 	grid.startup();	
 
 	topic.subscribe('product/button/edit/click', function() {
-		console.warn(form.toObject('formEdit'));
 		request.post(dom.byId('formEdit').getAttribute('url'),{
 			data: form.toObject('formEdit'),
 			handleAs: 'json'
@@ -82,6 +81,42 @@ define([ 'dojo/has', 'require' ], function (has, require) {
 			}
 		});		
 	});
+
+	topic.subscribe('product/button/categorydelete/click', function(url) {
+		console.warn(grid.select.row.getSelected().join(','), url);
+		if(confirm("确认删除这些条目？")){
+			request.del(url,{
+				query: {categoryIds: grid.select.row.getSelected().join(',')},
+				handleAs: 'json'
+			}).then(function(text){
+				if(text && text.hasError) {
+					alert(text.message);
+					return;
+				} else {
+					grid.model.clearCache();
+					grid.body.refresh();
+					alert(text.message);
+				}
+			});			
+		}
+	});
+
+	topic.subscribe('product/button/categoryaddsave/click', function(url, data){
+		request.post(url,{
+			data: data,
+			handleAs: 'json'
+		}).then(function(text){
+			if(text.hasError) {//Has error when saving
+				alert(text.message);
+				return;
+			}
+			grid.model.clearCache();
+			grid.body.refresh();
+			registry.byId("dialog1").hide();
+		});
+	}); 
+
+
 
 	});
 });

@@ -188,8 +188,6 @@
 </div>
 <hr class="spacer" />
 <div data-dojo-type="dijit/TitlePane" data-dojo-props="title:'所属分类'"> 
-    <div data-dojo-type="dojox/data/QueryReadStore" data-dojo-id="categoryStore" url="${pageContext.request.contextPath}/domain/product/category/${productId}">
-    </div> 
     <div>
 		<button type="button" data-dojo-type="dijit/form/Button">添加分类			
 		    <script type="dojo/on" data-dojo-event="click">
@@ -198,34 +196,12 @@
 		    </script>   
 		</button>
 		<button type="button" data-dojo-type="dijit/form/Button">删除选中分类
-		    <script type="dojo/on" data-dojo-event="click" data-dojo-args="e">
-		        var items = categoryGrid.selection.getSelected();
-		        console.warn(items);
-		        if(items.length){
-		        	var ids = new Array();
-		        	for(var i =0;i<items.length;i++) {
-		        		if(null !== items[i]) {
-		        			console.info(categoryStore.getIdentity(items[i]));
-		        			ids.push(categoryStore.getIdentity(items[i]));
-		        		}
-		        	}
-                    require(["dojo/request", "dojo/dom-form", "dijit/registry"], function(request, form, registry){
-                        request.del('${pageContext.request.contextPath}/domain/product/removecategory/${productId}',{
-                            query: {categoryIds: ids.join(',')},
-                            handleAs: 'json'
-                        }).then(function(text){
-                            if(text && text.hasError) {
-                                alert(text.message);
-                                return;
-							} else {
-								alert(text.message);
-								categoryGrid.setQuery();
-							}
-                        });
-                    });		        	
-		        } /* end if */
-                e.stopImmediatePropagation();
-		    </script>   
+			<script type="dojo/on" data-dojo-event="click">
+				require(["dojo/topic"], function(topic){
+					topic.publish("product/button/categorydelete/click", 
+						'${pageContext.request.contextPath}/domain/product/category/${productId}');
+				});
+			</script>
 		</button>	
     </div>
     <div id="categoryGrid" url="${pageContext.request.contextPath}/domain/product/categories/${productId}"></div>

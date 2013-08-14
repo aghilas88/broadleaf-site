@@ -12,25 +12,14 @@
             <center>
             <button data-dojo-type="dojox/form/BusyButton" busyLabel="正在保存..." timeout="5">Save
                 <script type="dojo/on" data-dojo-event="click">
-                    require(["dojo/request","dojo/dom-form", "dijit/registry"], function(request, domForm, registry){
+                    require(["dojo/topic", "dojo/dom-form", "dijit/registry"], function(topic, domForm, registry){
                         var form = registry.byId('formCreate');
-                        console.warn(domForm.toObject('formCreate'));
-                        console.warn(form);
                         if(form.validate()) {
-                            request.post('${pageContext.request.contextPath}/domain/product/category/${id}',{
-                                data: domForm.toObject('formCreate'),
-                                handleAs: 'json'
-                            }).then(function(text){
-                                if(text.hasError) {//Has error when saving
-                                    alert(text.message);
-                                    return;
-                                }
-                                categoryGrid.setQuery();
-                                registry.byId("dialog1").hide();
-                            });
+                            topic.publish("product/button/categoryaddsave/click", 
+                                '${pageContext.request.contextPath}/domain/product/category/${id}', domForm.toObject('formCreate'));
                         }
                     });
-                </script>                          
+                </script>                        
             </button>
             </center>
             </td>

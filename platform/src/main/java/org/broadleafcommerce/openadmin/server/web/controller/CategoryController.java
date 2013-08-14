@@ -8,6 +8,7 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.openadmin.server.dto.CategoryDto;
 import org.broadleafcommerce.openadmin.server.web.service.SimpleCatalogService;
@@ -53,6 +54,7 @@ public class CategoryController {
 	@RequestMapping(value = "filteringselect")
 	@ResponseBody
 	public List<CategoryDto> filteringSelect(@RequestParam(value = "name", required = false) String name, HttpServletRequest request) {
+		name = StringUtils.remove(name, "*");
 		List<Category> list = catalogService.findActiveCategoriesByName(name);
 		return CategoryDto.toList(list);
 	}	

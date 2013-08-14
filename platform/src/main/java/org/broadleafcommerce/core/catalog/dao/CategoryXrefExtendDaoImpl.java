@@ -9,6 +9,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import org.broadleafcommerce.core.catalog.domain.CategoryProductXref;
+import org.broadleafcommerce.core.catalog.domain.CategoryProductXrefImpl;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -44,12 +45,12 @@ public class CategoryXrefExtendDaoImpl extends CategoryXrefDaoImpl implements Ca
 
 	@Override
 	public CategoryProductXref createCategoryProductXref() {
-		return entityConfiguration.createEntityInstance(CategoryProductXref.class.getName(), CategoryProductXref.class);
+		return new CategoryProductXrefImpl();
 	}
 
 	@Override
 	public Long readMaxDisplayOrderByCategoryId(Long categoryId) {
-        TypedQuery<Long> query = em.createNamedQuery(readMaxDisplayOrderByCategoryId, Long.class);
+        TypedQuery<Long> query = em.createQuery(readMaxDisplayOrderByCategoryId, Long.class);
         query.setParameter("categoryId", categoryId);
         Long value = query.getSingleResult() ;
 		return value == null ? 1 : value + 1;
@@ -65,7 +66,9 @@ public class CategoryXrefExtendDaoImpl extends CategoryXrefDaoImpl implements Ca
 		if(null != categoryIds) {
 			for(Long categoryId : categoryIds) {
 				CategoryProductXref entity = this.readProductXrefById(productId, categoryId);
-				em.remove(entity);
+				if(null != entity) {
+					em.remove(entity);
+				}
 			}
 		}	
 	}

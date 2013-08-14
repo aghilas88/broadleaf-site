@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
+import org.apache.commons.lang.StringUtils;
 import org.broadleafcommerce.core.catalog.domain.Category;
 import org.broadleafcommerce.core.catalog.domain.CategoryProductXref;
 import org.springframework.stereotype.Repository;
@@ -22,7 +23,7 @@ public class CategoryExtendDaoImpl extends CategoryDaoImpl implements CategoryEx
 			"FROM org.broadleafcommerce.core.catalog.domain.CategoryProductXrefImpl xref " + 
             "WHERE xref.categoryProductXref.product.id = :productId ";
 	protected static final String readCategoriesByNameAndStatus = "select cat from org.broadleafcommerce.core.catalog.domain.CategoryImpl cat "
-			+ " where cat.name like :name + %";
+			+ " where cat.name like :name";
 	/**
 	 * 
 	 */
@@ -40,6 +41,9 @@ public class CategoryExtendDaoImpl extends CategoryDaoImpl implements CategoryEx
 	@Override
 	public List<Category> readCategoriesByNameAndStatus(String name) {
 		TypedQuery<Category> query = em.createQuery(readCategoriesByNameAndStatus, Category.class);
+		if(!StringUtils.endsWith(name, "%")) {
+			name = name + "%";
+		}
 		query.setParameter("name", name);
 		return query.getResultList();
 	}
