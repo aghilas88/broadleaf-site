@@ -3,6 +3,7 @@
  */
 package org.broadleafcommerce.openadmin.server.web.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.broadleafcommerce.common.util.dao.SearchTemplate;
@@ -28,4 +29,14 @@ public interface SimpleCatalogService extends CatalogService {
 	void saveProductCategories(Long productId, List<Long> ids);
 
 	void removeProductCategories(Long productId, List<Long> ids);
+
+	void removeCategoryProducts(Long categoryId, List<Long> productId);
+
+	Long findActiveProductCountByCategory(Long categoryId, Date currentDate);
+
+	void removeCategoryMedias(Long categoryId, List<Long> mediaIds);
+
+	List<CategoryProductXref> findActiveProductsByCategory(Long categoryId,
+			Date currentDate, int limit, int offset);
+
 }

@@ -9,6 +9,13 @@
 @import '../../dojo/resources/dojo.css';
 @import '../../dijit/themes/claro/claro.css';
 
+html, body {
+	height: 100%;
+	width: 100%;
+	padding: 0;
+	border: 0;
+}
+
 .gridx {
 	width: 100%;
 }

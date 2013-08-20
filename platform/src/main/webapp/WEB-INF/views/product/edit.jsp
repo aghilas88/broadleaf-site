@@ -173,13 +173,20 @@
 	      	<tr>
 	      		<td colspan="4">
 	      			<center>
-					<button data-dojo-type="dojox/form/BusyButton" busy-label="正在保存..." timeout="5" id="btnEditProduct">保存1
+					<button data-dojo-type="dojox/form/BusyButton" busy-label="正在保存..." timeout="5">保存
 						<script type="dojo/on" data-dojo-event="click">
 							require(["dojo/topic"], function(topic){
-    							topic.publish("product/button/edit/click", this);
+    							topic.publish("product/button/edit/click");
     						});
 		    			</script>
 					</button>
+					<button data-dojo-type="dojox/form/BusyButton" busy-label="正在保存..." timeout="5">发布
+						<script type="dojo/on" data-dojo-event="click">
+							require(["dojo/topic"], function(topic){
+    							topic.publish("product/button/publish/click", '${pageContext.request.contextPath}/domain/product/publish/${productId}');
+    						});
+		    			</script>
+					</button>					
 	      		 	</center>
 	      		</td>
 	      	</tr>
@@ -188,6 +195,26 @@
 </div>
 <hr class="spacer" />
 <div data-dojo-type="dijit/TitlePane" data-dojo-props="title:'所属分类'"> 
+    <div>
+		<button type="button" data-dojo-type="dijit/form/Button">添加分类			
+		    <script type="dojo/on" data-dojo-event="click">
+		        var dlg = dijit.byId('dialog1');
+		        dlg.show();
+		    </script>   
+		</button>
+		<button type="button" data-dojo-type="dijit/form/Button">删除选中分类
+			<script type="dojo/on" data-dojo-event="click">
+				require(["dojo/topic"], function(topic){
+					topic.publish("product/button/categorydelete/click", 
+						'${pageContext.request.contextPath}/domain/product/category/${productId}');
+				});
+			</script>
+		</button>	
+    </div>
+    <div id="categoryGrid" url="${pageContext.request.contextPath}/domain/product/categories/${productId}"></div>
+</div>
+<hr/>
+<div data-dojo-type="dijit/TitlePane" data-dojo-props="title:'SKU'"> 
     <div>
 		<button type="button" data-dojo-type="dijit/form/Button">添加分类			
 		    <script type="dojo/on" data-dojo-event="click">

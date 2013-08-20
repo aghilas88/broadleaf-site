@@ -3,6 +3,7 @@
  */
 package org.broadleafcommerce.openadmin.server.web.service;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -38,7 +39,7 @@ public class SimpleCatalogServiceImpl extends CatalogServiceImpl implements Simp
 
 	@Override
 	public List<CategoryProductXref> findCategoryProductXrefByProductId(Long productId) {
-		return this.categoryExtendDao.readCategoryProductXrefByProductId(productId);
+		return this.categoryXrefDao.readCategoryProductXrefByProductId(productId);
 	}
 	
 	@Override
@@ -74,6 +75,29 @@ public class SimpleCatalogServiceImpl extends CatalogServiceImpl implements Simp
 	@Transactional("blTransactionManager")
 	public void removeProductCategories(Long productId, List<Long> categoryIds) {
 		this.categoryXrefDao.deleteProductCategory(productId, categoryIds);
+	}
+
+	@Override
+	@Transactional("blTransactionManager")
+	public void removeCategoryProducts(Long categoryId, List<Long> productIds) {
+		this.categoryXrefDao.deleteCategoryProduct(categoryId, productIds);
+	}
+
+	@Override
+	public Long findActiveProductCountByCategory(Long categoryId, Date currentDate) {
+		return categoryXrefDao.readActiveProductCountByCategory(categoryId, currentDate);
+	}
+
+	@Override
+	@Transactional("blTransactionManager")
+	public void removeCategoryMedias(Long categoryId, List<Long> mediaIds) {
+		this.categoryExtendDao.deleteMedia(categoryId, mediaIds);
+	}
+
+	@Override
+	public List<CategoryProductXref> findActiveProductsByCategory(Long categoryId,
+			Date currentDate, int limit, int offset) {
+		return categoryXrefDao.readActiveProductsByCategory(categoryId, currentDate, limit, offset);
 	}
 
 }

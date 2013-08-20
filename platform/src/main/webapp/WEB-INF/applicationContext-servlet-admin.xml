@@ -51,8 +51,12 @@
 	<mvc:view-controller path="/login" view-name="admin/login" />
 	<mvc:view-controller path="/forgotUsername" view-name="admin/forgotUsername" />
 
-	<mvc:view-controller path="/product/create" />
+	<mvc:view-controller path="/page/product/create" view-name="product/create" />
+	<mvc:view-controller path="/page/product/list" view-name="product/list" />
 
+	<mvc:view-controller path="/page/category/list" view-name="category/list" />
+	<mvc:view-controller path="/page/category/create" view-name="category/create" />
+	
 	<mvc:view-controller path="/uncaughtException"/>
 	<mvc:view-controller path="/resourceNotFound"/>
 	<mvc:view-controller path="/dataAccessFailure"/>

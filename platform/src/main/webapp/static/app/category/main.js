@@ -28,8 +28,9 @@ define([ 'dojo/has', 'require' ], function (has, require) {
 		'gridx/Grid',
 		'dijit/Toolbar',
 		'dijit/form/Button',
-		'dijit/form/ToggleButton', 
-		'dojox/form/BusyButton',		
+		'dojox/form/BusyButton',	
+		"dijit/Tree",
+		"dijit/tree/ObjectStoreModel",	
 		//'gridx/core/model/cache/Sync',
 		'gridx/core/model/cache/Async',
         "gridx/modules/IndirectSelect",
@@ -40,15 +41,46 @@ define([ 'dojo/has', 'require' ], function (has, require) {
         "gridx/modules/pagination/PaginationBar",
         "gridx/modules/VirtualVScroller",
         "gridx/modules/Bar",       
-		'dojo/domReady!' ], function (parser, registry, request, form, topic, JsonRest, dom, Grid, Toolbar, Button, ToggleButton) {
+		'dojo/domReady!' ], function (parser, registry, request, form, topic, JsonRest, dom, Grid, Toolbar, Button, BusyButton, Tree, ObjectStoreModel) {
     
     parser.parse();
 
-	grid = new Grid({
-		id: 'grid',
+    // create store
+	usGov = new JsonRest({
+		target: dom.byId('tree').getAttribute('url'),
+		getChildren: function(object){
+			// object may just be stub object, so get the full object first and then return it's
+			// list of children
+			return this.get(object.id).then(function(fullObject){
+				return fullObject.children;
+			});
+		}
+	});
+
+	// create model to interface Tree to store
+	model = new ObjectStoreModel({
+		store: usGov,
+
+		getRoot: function(onItem){
+			this.store.get("root").then(onItem);
+		},
+		mayHaveChildren: function(object){
+			return "children" in object;
+		}
+	});
+
+	var tree = new Tree({
+		model: model,
+		persist: false
+	}, "tree"); // make sure you have a target HTML element with this id
+	
+	tree.startup();
+
+	mediaGrid = new Grid({
+		id: 'mediaGrid',
 		autoHeight: true,
 		store: new JsonRest({
-    		target: dom.byId('categoryGrid').getAttribute('url')
+    		target: dom.byId('mediaGrid').getAttribute('url')
 		}),
 		structure: [
 			{id: 'id', field: 'id', name: '分类ID'},
@@ -65,66 +97,8 @@ define([ 'dojo/has', 'require' ], function (has, require) {
 		    "gridx/modules/VirtualVScroller"
 		]
 	});
-	grid.placeAt('categoryGrid');
-	grid.startup();	
-
-	topic.subscribe('product/button/edit/click', function() {
-		request.post(dom.byId('formEdit').getAttribute('url'),{
-			data: form.toObject('formEdit'),
-			handleAs: 'json'
-		}).then(function(text){
-			console.log("The server returned: ", text);
-			if(text && text.hasError) {
-				alert(text.message);
-			} else {
-				alert(text.message);
-			}
-		});		
-	});
-
-	topic.subscribe('product/button/publish/click', function(url){
-		request.post(url,{
-			handleAs: 'json'
-		}).then(function(text){
-			alert(text.message);
-		});		
-	});
-
-
-	topic.subscribe('product/button/categorydelete/click', function(url) {
-		console.warn(grid.select.row.getSelected().join(','), url);
-		if(confirm("确认删除这些条目？")){
-			request.del(url,{
-				query: {categoryIds: grid.select.row.getSelected().join(',')},
-				handleAs: 'json'
-			}).then(function(text){
-				if(text && text.hasError) {
-					alert(text.message);
-					return;
-				} else {
-					grid.model.clearCache();
-					grid.body.refresh();
-					alert(text.message);
-				}
-			});			
-		}
-	});
-
-	topic.subscribe('product/button/categoryaddsave/click', function(url, data){
-		request.post(url,{
-			data: data,
-			handleAs: 'json'
-		}).then(function(text){
-			if(text.hasError) {//Has error when saving
-				alert(text.message);
-				return;
-			}
-			grid.model.clearCache();
-			grid.body.refresh();
-			registry.byId("dialog1").hide();
-		});
-	}); 
-
+	mediaGrid.placeAt('mediaGrid');
+	mediaGrid.startup();	
 
 
 	});

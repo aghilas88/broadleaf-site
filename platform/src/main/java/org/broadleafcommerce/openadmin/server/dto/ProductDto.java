@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.broadleafcommerce.core.catalog.domain.Category;
+import org.broadleafcommerce.core.catalog.domain.CategoryProductXref;
 import org.broadleafcommerce.core.catalog.domain.Product;
 import org.broadleafcommerce.core.catalog.domain.Sku;
 
@@ -356,6 +357,12 @@ public class ProductDto {
 			}
 			return dtos;
 		}
+		return null;
+	}
+
+
+	public static List<ProductDto> toXrefList(List<CategoryProductXref> xrefs) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 	

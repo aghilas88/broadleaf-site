@@ -5,11 +5,11 @@ package org.broadleafcommerce.core.catalog.dao;
 
 import java.util.List;
 
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.apache.commons.lang.StringUtils;
 import org.broadleafcommerce.core.catalog.domain.Category;
-import org.broadleafcommerce.core.catalog.domain.CategoryProductXref;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -19,23 +19,16 @@ import org.springframework.stereotype.Repository;
 @Repository("slCategoryDao")
 public class CategoryExtendDaoImpl extends CategoryDaoImpl implements CategoryExtendDao {
 	
-	protected static final String BC_READ_CATEGORY_XREF_BY_PRODUCTID = "SELECT xref " + 
-			"FROM org.broadleafcommerce.core.catalog.domain.CategoryProductXrefImpl xref " + 
-            "WHERE xref.categoryProductXref.product.id = :productId ";
 	protected static final String readCategoriesByNameAndStatus = "select cat from org.broadleafcommerce.core.catalog.domain.CategoryImpl cat "
 			+ " where cat.name like :name";
+	protected static final String deleteCategoryMedia = "delete from org.broadleafcommerce.core.media.domain.CategoryMediaMap map "
+			+ " where map.categoryMediaMapPK.mediaId in(:mediaIds) and map.categoryMediaMapPK.categoryId = :categoryId";
+	
 	/**
 	 * 
 	 */
 	public CategoryExtendDaoImpl() {
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public List<CategoryProductXref> readCategoryProductXrefByProductId(Long productId) {
-        TypedQuery<CategoryProductXref> query = em.createQuery(BC_READ_CATEGORY_XREF_BY_PRODUCTID, CategoryProductXref.class);
-        query.setParameter("productId", productId);
-        return query.getResultList();
 	}
 
 	@Override
@@ -46,6 +39,14 @@ public class CategoryExtendDaoImpl extends CategoryDaoImpl implements CategoryEx
 		}
 		query.setParameter("name", name);
 		return query.getResultList();
+	}
+
+	@Override
+	public void deleteMedia(Long categoryId, List<Long> mediaIds) {
+		Query query = em.createQuery(deleteCategoryMedia);
+		query.setParameter("categoryId", categoryId);
+		query.setParameter("mediaIds", mediaIds);
+		query.executeUpdate();
 	}
 
 }

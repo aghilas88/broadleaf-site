@@ -147,4 +147,13 @@
         </property>
     </bean>
 
+    <bean id="slSearchService" class="org.broadleafcommerce.core.search.service.solr.SolrSearchServiceImpl">
+        <constructor-arg name="solrServer" ref="solrPrimaryServer" />
+    </bean> 
+    
+    <bean id="solrPrimaryServer" class="org.apache.solr.client.solrj.impl.ConcurrentUpdateSolrServer">
+        <constructor-arg type="java.lang.String" index="0" value="${solr.solrj.primary.url}" />
+        <constructor-arg type="int" index="1" value="${solr.solrj.queueSize}" />
+        <constructor-arg type="int" index="2" value="${solr.solrj.threadCount}" />
+    </bean>
 </beans>

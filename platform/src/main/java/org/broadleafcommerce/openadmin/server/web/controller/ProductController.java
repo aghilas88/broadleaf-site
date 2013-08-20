@@ -22,6 +22,7 @@ import org.broadleafcommerce.core.catalog.service.type.ProductType;
 import org.broadleafcommerce.openadmin.server.dto.CategoryDto;
 import org.broadleafcommerce.openadmin.server.dto.ProductDto;
 import org.broadleafcommerce.openadmin.server.web.service.SimpleCatalogService;
+import org.broadleafcommerce.openadmin.server.web.service.SolrIndexExtendService;
 import org.broadleafcommerce.openadmin.server.web.validator.MoneyEditor;
 import org.broadleafcommerce.openadmin.server.web.validator.ProductValidator;
 import org.slf4j.Logger;
@@ -53,7 +54,9 @@ public class ProductController {
 	protected SimpleCatalogService catalogService;
 	@Resource(name = "slProductValidator")
 	protected ProductValidator productValidator;
-
+	@Resource(name = "slSolrIndexService")
+	protected SolrIndexExtendService solrIndexService;
+	
 	@RequestMapping(value = "create")
 	@ResponseBody
 	public Result create(@RequestParam("parentCategory") Long parentCategoryId, HttpServletRequest request) {
@@ -134,6 +137,13 @@ public class ProductController {
 		return result;
 	}
 	
+	@RequestMapping(value = "publish/{id}", method = RequestMethod.POST)
+	@ResponseBody
+	public Result publish(@PathVariable("id")Long productId, HttpServletRequest request) {
+		Result result = new Result(Result.SUCCESSMESSAGE);
+		solrIndexService.createIndex(this.catalogService.findProductById(productId));
+		return result;
+	}
 	@RequestMapping(value = "list")
 	@ResponseBody
 	public List<ProductDto> list(@ModelAttribute ProductSearchForm productSearchForm, HttpServletRequest request, HttpServletResponse response) {

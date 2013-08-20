@@ -27,6 +27,7 @@ public class CategoryDto {
     protected Long defaultParentCategoryId;
     protected String defaultParentCategoryName;
 
+    protected List<CategoryDto> children;
 	/**
 	 * 
 	 */
@@ -143,6 +144,22 @@ public class CategoryDto {
 		this.displayOrder = displayOrder;
 	}
 
+	
+	public List<CategoryDto> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<CategoryDto> children) {
+		this.children = children;
+	}
+
+	public void addChild(CategoryDto category) {
+		if(null == this.children) {
+			this.children = new LinkedList<CategoryDto>();
+		}
+		this.children.add(category);
+	}
+	
 	public static List<CategoryDto> toList(List<Category> list) {
 		if(null != list) {
 			List<CategoryDto> dtos = new LinkedList<CategoryDto>();
@@ -165,5 +182,13 @@ public class CategoryDto {
 			return list;
 		}
 		return null;
+	}
+
+	public void addChildren(List<Category> list) {
+		if(null != list && list.size() > 0) {
+			for(Category cat : list) {
+				this.addChild(new CategoryDto(cat));
+			}
+		}
 	}
 }
