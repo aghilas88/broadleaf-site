@@ -71,9 +71,33 @@ define([ 'dojo/has', 'require' ], function (has, require) {
 
 	var tree = new Tree({
 		model: model,
-		persist: false
+		openOnClick: false,
+		persist: true
 	}, "tree"); // make sure you have a target HTML element with this id
 	
+	tree.on("click", function(object){
+    	//object.name = prompt("Enter a new name for the object");
+    	//governmentStore.put(object);
+    	console.warn(object);
+		request.get(dom.byId('formEdit').getAttribute('url') + object.id,{
+			handleAs: 'json'
+		}).then(function(text){
+			console.info(text);
+			/**
+			if(text && text.id) {
+				var form = registry.byId('formEdit');
+				if(form) {
+					form.attr('value', text);
+					var catId = dom.byId('categoryId')
+					if(catId) {
+						catId.value = text.id;
+					}
+				}
+			} 
+			**/                   
+		});    	
+	}, true);
+
 	tree.startup();
 
 	mediaGrid = new Grid({

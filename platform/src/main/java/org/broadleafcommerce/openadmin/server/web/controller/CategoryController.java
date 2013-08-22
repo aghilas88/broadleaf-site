@@ -3,6 +3,7 @@
  */
 package org.broadleafcommerce.openadmin.server.web.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -28,7 +29,10 @@ import org.broadleafcommerce.openadmin.server.web.service.SimpleCatalogService;
 import org.broadleafcommerce.openadmin.server.web.validator.CategoryValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.domain.Result;
+import org.springframework.web.servlet.support.RequestContext;
 
 /**
  * @author javacares@gmail.com
@@ -62,6 +67,47 @@ public class CategoryController {
 	 */
 	public CategoryController() {
 		// TODO Auto-generated constructor stub
+	}
+
+	@RequestMapping(value = "detail/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public CategoryDto detail(@PathVariable(value="id") Long categoryId, 
+			HttpServletRequest request, HttpServletResponse resp) {
+		if(null != categoryId) {
+			resp.addCookie(getSelectedTreeNodeCookie(categoryId));
+		}
+		return new CategoryDto(catalogService.findCategoryById(categoryId));
+	}
+	
+	@RequestMapping(value = "edit/{id}", method = RequestMethod.POST)
+	@ResponseBody
+	public Result edit(@PathVariable(value="id") Long id, HttpServletRequest request) {
+		Result result = new Result(Result.SUCCESSMESSAGE);
+		if(null != id) {
+			Category category = this.catalogService.findCategoryById(id);
+			if(null != category) {
+				ServletRequestDataBinder binder = new ServletRequestDataBinder(category);
+		        binder.registerCustomEditor(java.util.Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
+				binder.bind(request);
+				category.setLongDescription(request.getParameter("longDescription"));
+				BindingResult bindingResult = binder.getBindingResult();
+				if(!bindingResult.hasErrors()) {
+					categoryValidator.validate(category, bindingResult);
+				}
+				if(!bindingResult.hasErrors()) {
+					try {
+						this.catalogService.saveCategory(category);
+					}catch (Exception e) {
+						result.setMessage(e.getMessage());
+						result.setHasError(true);
+					}
+				} else {
+					RequestContext context = new RequestContext(request);
+					result.initMessages(context, bindingResult);
+				}
+			}
+		}
+		return result;
 	}
 
 	/**
@@ -92,7 +138,8 @@ public class CategoryController {
 	
 	@RequestMapping(value = "tree/{id}")
 	@ResponseBody	
-	public CategoryDto children(@PathVariable("id") String categoryId, HttpServletRequest request) {
+	public CategoryDto children(@PathVariable("id") String categoryId,
+			HttpServletRequest request, HttpServletResponse resp) {
 		Long catId = 1l;
 		if(StringUtils.isNotBlank(categoryId) && StringUtils.isNumeric(categoryId)) {
 			catId = Long.valueOf(categoryId);
@@ -102,6 +149,8 @@ public class CategoryController {
 			CategoryDto dto = new CategoryDto(category);
 			List<Category> list = this.catalogService.findAllSubCategories(category);
 			dto.addChildren(list);
+			resp.addCookie(getSelectedTreeNodeCookie(catId));
+			
 			return dto;
 		}
 		return new CategoryDto();
@@ -155,7 +204,6 @@ public class CategoryController {
 			@CookieValue(value=COOKIE_FOR_SELECTED_ITEM, required = false) Long cid, 
 			HttpServletRequest request, HttpServletResponse response) {
 		Date currentDate = new Date();
-//		Category category = this.catalogService.findCategoryById(categoryId);
 		Long total = catalogService.findActiveProductCountByCategory(categoryId, currentDate);
 		if(null != total && total.intValue() > 0) {
 			int[] limit = ServletUtils.getRangeLimitAndOffset(request);

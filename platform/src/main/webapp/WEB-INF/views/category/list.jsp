@@ -38,7 +38,7 @@
         </button>
 
         <div data-dojo-type="dijit/TitlePane" data-dojo-props="title:'分类详情'">      
-        <form data-dojo-type="dijit/form/Form" id="formEdit">    
+        <form data-dojo-type="dijit/form/Form" id="formEdit" url="${pageContext.request.contextPath}/domain/category/detail/" action="${pageContext.request.contextPath}/domain/category/edit/">    
             <table>
                 <tr>
                     <td><label for="name">名称</label><input type="hidden" name="id" value="${category.name}" /></td>

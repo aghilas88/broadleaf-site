@@ -54,7 +54,6 @@
 	<mvc:view-controller path="/page/product/create" view-name="product/create" />
 	<mvc:view-controller path="/page/product/list" view-name="product/list" />
 
-	<mvc:view-controller path="/page/category/list" view-name="category/list" />
 	<mvc:view-controller path="/page/category/create" view-name="category/create" />
 	
 	<mvc:view-controller path="/uncaughtException"/>
